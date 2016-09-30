@@ -1,0 +1,22 @@
+
+body {
+    margin: 0px;
+    padding: 0px;
+
+}
+
+h2 {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pt-list {
+    list-style: none;
+    margin: 0 auto;
+    width: 500px;
+    margin-top: 20px;
+}
+
+.pt-list > li {
+    margin: 20px;
+}
