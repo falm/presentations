@@ -1,0 +1,241 @@
+<!--
+    Powered By nodePPT - This is probably the best web presentation tool so far!
+    version: 1.4.1
+    site: https://github.com/ksky521/nodePPT
+    date: 
+-->
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MySQL事务隔离和加锁分析 - By Jason Hou</title>
+    <link rel="stylesheet" media="all" href="./css/nodeppt.css">
+    <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="./css/phone.css">
+    
+    <link rel="stylesheet" href="./js/highlight/styles/monokai_sublime.css">
+    <link rel="stylesheet" href="./css/font-awesome.css">
+    
+<link rel="stylesheet" href="./css/theme.dark.css">
+</head>
+<body>
+<div class="slides">
+    <slides id="container">
+        <slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>MySQL事务隔离和加锁分析</h1>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>MVCC(多版本并发控制)</h2>
+
+</hgroup><article>
+
+<ul>
+<li>当前读
+(加锁)</li>
+<li>快照读
+(不加锁)</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>快照读</h2>
+<ul>
+<li><pre>
+<code class="sql">
+select * from users where id=1;
+</code>
+</pre></li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<img src="http://tech.meituan.com/img/innodb_lock/1.png" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>当前读</h2>
+<pre>
+<code class="sql">
+select * from users where ? lock in share mode;
+</code>
+</pre>
+<pre>
+<code class="sql">
+select * from users where ? for update;
+</code>
+</pre>
+<pre>
+<code class="sql">
+insert into users values (…);
+</code>
+</pre>
+<pre>
+<code class="sql">
+update users set ? where ?;
+</code>
+</pre>
+<pre>
+<code class="sql">
+delete from users where ?;
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>事务隔离</h2>
+
+</hgroup><article>
+
+<ul>
+<li>read uncommitted（读取未提交数据）</li>
+<li>read committed（可以读取其他事务提交的数据）</li>
+<li>repeatable read（可重读）</li>
+<li>serializable（串行化）</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>加锁分析</h2>
+
+</hgroup><article>
+
+<blockquote>
+<pre>
+<code class="sql">
+select * from users where id = 1;
+delete from users where id = 1;
+</code>
+</pre></blockquote>
+<ul>
+<li>id列是主键，RC隔离级别</li>
+<li>id列是二级唯一索引，RC隔离级别</li>
+<li>id列是二级非唯一索引，RC隔离级别</li>
+<li>id列上没有索引，RC隔离级别</li>
+<li>id列是主键，RR隔离级别</li>
+<li>id列是二级唯一索引，RR隔离级别</li>
+<li>id列是二级非唯一索引，RR隔离级别</li>
+<li>id列上没有索引，RR隔离级别</li>
+<li>Serializable隔离级别</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>id主键+RC 和 id主键+RR</h2>
+
+</hgroup><article>
+
+<img src="http://pic.yupoo.com/hedengcheng/DnJ6RtaP/medish.jpg" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>id唯一索引+RC 和 id唯一索引+RR</h2>
+
+</hgroup><article>
+
+<img src="http://pic.yupoo.com/hedengcheng/DnJ6PDep/medish.jpg" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>id非唯一索引+RC</h2>
+
+</hgroup><article>
+
+<img src="http://pic.yupoo.com/hedengcheng/DnJ6RA8t/medish.jpg" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>id无索引+RC</h2>
+
+</hgroup><article>
+
+<img src="http://pic.yupoo.com/hedengcheng/DnJ6Rt0M/medish.jpg" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>id非唯一索引+RR</h2>
+
+</hgroup><article>
+
+<img src="http://pic.yupoo.com/hedengcheng/DnJ6R7wu/medish.jpg" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>id无索引+RR</h2>
+
+</hgroup><article>
+
+<img src="http://pic.yupoo.com/hedengcheng/DnJ6Rf3q/medish.jpg" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>谢谢大家</h1>
+
+</article></section></slide>
+        
+
+        <!-- <slide class="slide logoslide dark nobackground">
+            <article class="flexbox vcenter">
+                <h2 style="color: white;">Powered By nodePPT v1.4.1</h2>
+            </article>
+        </slide> -->
+        <div class="slideTip" id="tip"></div>
+    </slides>
+</div>
+<canvas id="drawBoard" class="draw-board" width="900" height="700"></canvas>
+<div class="progress"><span id="progress"></span></div>
+<div id="_buttons">
+    <div class="_btn-box" id="_btn-box" style="display:none;">
+        <button class="fa fa-arrow-circle-left" id="_btn-prev"></button>
+        <button class="fa fa-arrow-circle-right" id="_btn-next"></button>
+        <button class="fa fa-paint-brush" id="_btn-brush"></button>
+        <button class="fa fa-compress" id="_btn-overview" data-toggle="fa fa-expand"></button>
+    </div>
+    <button class="fa fa-bars" id="_btn-bar"  data-toggle="fa fa-close"></button>
+</div>
+<script src="./js/mixjs/lib/mix.0.3.0.min.js"></script>
+<script>
+var base = location.protocol + '//' + location.host;
+
+var path = (location.pathname + '#').split('/').filter(function(v){
+    return !!v;
+});
+path.pop();
+path = path.join('/');
+MixJS.config({
+    baseURL: [ base, path, 'js'].join('/')+'/'
+});
+
+</script>
+<script src="./js/mixjs/lib/event/broadcast.js"></script>
+<script src="./js/nodeppt.js"></script>
+<script>
+Slide.init({
+    containerID: 'container',
+    drawBoardID: 'drawBoard',
+    slideClass: '.slide',
+    buildClass: '.build',
+    progressID: 'progress',
+    transition: 'zoomin',
+    width: 1100,
+    dir: './',
+    
+    //打开下面的注释就开启postMessage方式
+    //访问网址127.0.0.1:8080/ppt/demo#client
+    control:{
+        type: 'postMessage',
+        args:{
+            isControl:  false
+        }
+    },
+    
+    tipID: 'tip'
+});
+MixJS.loadJS('highlight/highlight.pack.js',function(){
+    hljs.tabReplace = '  ';
+    hljs.initHighlightingOnLoad();
+});
+</script>
+
+
+<!--placeholder-->
+</body>
+</html>
