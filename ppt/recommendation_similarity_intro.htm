@@ -1,0 +1,220 @@
+<!--
+    Powered By nodePPT - This is probably the best web presentation tool so far!
+    version: 1.4.1
+    site: https://github.com/ksky521/nodePPT
+    date: 
+-->
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>文本相似性计算介绍 - By Jason Hou</title>
+    <link rel="stylesheet" media="all" href="./css/nodeppt.css">
+    <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="./css/phone.css">
+    
+    <link rel="stylesheet" href="./js/highlight/styles/monokai_sublime.css">
+    <link rel="stylesheet" href="./css/font-awesome.css">
+    
+<link rel="stylesheet" href="./css/theme.dark.css">
+</head>
+<body>
+<div class="slides">
+    <slides id="container">
+        <slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>文本相似性计算介绍</h1>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>推荐系统</h2>
+
+</hgroup><article>
+
+<ul>
+<li>基于用户行为特征</li>
+<li>基于内容相似度</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>分词</h2>
+<h2>词袋</h2>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>Jaccard Index</h2>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Intersection_of_sets_A_and_B.svg/256px-Intersection_of_sets_A_and_B.svg.png" alt="">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Union_of_sets_A_and_B.svg/256px-Union_of_sets_A_and_B.svg.png" alt=""></p>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>Jaccard Index</h2>
+<img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/eaef5aa86949f49e7dc6b9c8c3dd8b233332c9e7" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>向量空间相似度</h2>
+
+</hgroup><article>
+
+<ul>
+<li>欧式距离</li>
+<li>余弦相似度</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>TF-IDF向量化</h2>
+<ul>
+<li>TF（词频）</li>
+<li>IDF（逆向文件频率）</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>计算方式</h2>
+<p><img src="http://www.it165.net/uploadfile/files/2015/1118/20151118181440118.jpg" alt="">
+<img src="http://www.it165.net/uploadfile/files/2015/1118/20151118181440121.jpg" alt=""></p>
+<img src="http://www.it165.net/uploadfile/files/2015/1118/20151118181441122.png" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>代码</h2>
+<pre>
+<code class="ruby">
+require 'ruby-tf-idf'
+
+corpus = [
+  'A big enough hammer can usually fix anything',
+  'A bird in the hand is a big mistake .',
+  'A bird in the hand is better than one overhead!',
+  'A career is a job that takes about 20 more hours a week.',
+  'A clean desk is a sign of a cluttered desk drawer.',
+  'A cynic smells flowers and looks for the casket.'
+]
+
+limit = 3 #每个文档最多的三个词
+exclude_stop_words = false
+
+@t = RubyTfIdf::TfIdf.new(corpus,limit,exclude_stop_words)
+output =  @t.tf_idf
+</code>
+</pre>
+
+<pre>
+<code class="ruby">
+[
+  {"anything"=>0.7781512503836436,"fix"=>0.7781512503836436, "enough"=>0.7781512503836436},
+  {"mistake"=>0.7781512503836436, "bird"=>0.47712125471966244, "in"=>0.47712125471966244},
+  {"overhead!"=>0.7781512503836436, "better"=>0.7781512503836436, "one"=>0.7781512503836436},
+  {"week"=>0.7781512503836436, "career"=>0.7781512503836436, "hours"=>0.7781512503836436},
+  {"desk"=>1.5563025007672873, "drawer"=>0.7781512503836436, "clean"=>0.7781512503836436},
+  {"casket"=>0.7781512503836436, "cynic"=>0.7781512503836436, "smells"=>0.7781512503836436}
+]
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>欧式距离</h2>
+<img src="https://segmentfault.com/img/bVwg8L" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>ruby代码</h2>
+<p>ruby gem : measurable</p>
+<pre>
+<code class="ruby">
+require 'measurable'
+
+# Calculate the distance between two points in space.
+Measurable.euclidean([1, 1], [0, 0]) # => 1.41421
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>余弦相似度</h2>
+<img src="https://segmentfault.com/img/bVwg8M" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>ruby代码</h2>
+<pre>
+<code class="ruby">
+# Get the cosine distance between
+Measurable.cosine_distance([1, 2], [2, 3]) # => 0.007722123286332261
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>谢谢大家</h2>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"></section></slide>
+        
+
+        <!-- <slide class="slide logoslide dark nobackground">
+            <article class="flexbox vcenter">
+                <h2 style="color: white;">Powered By nodePPT v1.4.1</h2>
+            </article>
+        </slide> -->
+        <div class="slideTip" id="tip"></div>
+    </slides>
+</div>
+<canvas id="drawBoard" class="draw-board" width="900" height="700"></canvas>
+<div class="progress"><span id="progress"></span></div>
+<div id="_buttons">
+    <div class="_btn-box" id="_btn-box" style="display:none;">
+        <button class="fa fa-arrow-circle-left" id="_btn-prev"></button>
+        <button class="fa fa-arrow-circle-right" id="_btn-next"></button>
+        <button class="fa fa-paint-brush" id="_btn-brush"></button>
+        <button class="fa fa-compress" id="_btn-overview" data-toggle="fa fa-expand"></button>
+    </div>
+    <button class="fa fa-bars" id="_btn-bar"  data-toggle="fa fa-close"></button>
+</div>
+<script src="./js/mixjs/lib/mix.0.3.0.min.js"></script>
+<script>
+var base = location.protocol + '//' + location.host;
+
+var path = (location.pathname + '#').split('/').filter(function(v){
+    return !!v;
+});
+path.pop();
+path = path.join('/');
+MixJS.config({
+    baseURL: [ base, path, 'js'].join('/')+'/'
+});
+
+</script>
+<script src="./js/mixjs/lib/event/broadcast.js"></script>
+<script src="./js/nodeppt.js"></script>
+<script>
+Slide.init({
+    containerID: 'container',
+    drawBoardID: 'drawBoard',
+    slideClass: '.slide',
+    buildClass: '.build',
+    progressID: 'progress',
+    transition: 'zoomin',
+    width: 1100,
+    dir: './',
+    
+    //打开下面的注释就开启postMessage方式
+    //访问网址127.0.0.1:8080/ppt/demo#client
+    control:{
+        type: 'postMessage',
+        args:{
+            isControl:  false
+        }
+    },
+    
+    tipID: 'tip'
+});
+MixJS.loadJS('highlight/highlight.pack.js',function(){
+    hljs.tabReplace = '  ';
+    hljs.initHighlightingOnLoad();
+});
+</script>
+
+
+<!--placeholder-->
+</body>
+</html>
