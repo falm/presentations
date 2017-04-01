@@ -1,0 +1,301 @@
+<!--
+    Powered By nodePPT - This is probably the best web presentation tool so far!
+    version: 1.4.1
+    site: https://github.com/ksky521/nodePPT
+    date: 
+-->
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Golang OOP - By Jason Hou</title>
+    <link rel="stylesheet" media="all" href="./css/nodeppt.css">
+    <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="./css/phone.css">
+    
+    <link rel="stylesheet" href="./js/highlight/styles/monokai_sublime.css">
+    <link rel="stylesheet" href="./css/font-awesome.css">
+    
+<link rel="stylesheet" href="./css/theme.dark.css">
+</head>
+<body>
+<div class="slides">
+    <slides id="container">
+        <slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>Golang 面向对象</h1>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>面向对象特性</h2>
+
+</hgroup><article>
+
+<ul>
+<li>封装</li>
+<li>继承</li>
+<li>多态</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>对象</h2>
+<pre>
+<code class="golang">
+type rect struct {
+    width int
+    height int
+}
+
+func (r *rect) area() int {
+    return r.width * r.height
+}
+
+func main() {
+    r := rect{width: 10, height: 5}
+    fmt.Println("area: ", r.area())
+}
+// => area: 50
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>继承</h2>
+<ul class="moveIn">
+<li>Golang 使用组合替代继承</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>Has-a</h2>
+<pre>
+<code class="golang">
+type Person struct {
+   Name string
+   Address Address
+}
+type Address struct {
+   City   string
+   Province string
+}
+func (p *Person) Talk() {
+    fmt.Println("Hi, my name is", p.Name)
+}
+func (p *Person) Location() {
+    fmt.Println("I’m at", p.Address.Province, p.Address.city)
+}
+func main() {
+    p := Person{
+        Name: "买买提",
+        Address: Address{
+            City:   "乌鲁木齐",
+            Province:  "新疆",
+        },
+    }
+    p.Talk()
+    p.Location()
+}
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>Is-a</h2>
+<pre>
+<code class="golang">
+type Citizen struct {
+   Country string
+   Person // 匿名字段
+}
+
+func (c *Citizen) Nationality() {
+    fmt.Println(c.Name, "is a citizen of", c.Country)
+}
+
+func main() {
+    c := Citizen{}
+    c.Name = "阿凡提"
+    c.Country = "中国"
+    c.Talk()
+    c.Nationality()
+}
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>隐式调用-语法糖</h2>
+<pre>
+<code class="golang">
+func main() {
+    c := Citizen{}
+    c.Name = "阿凡提"
+    c.Country = "中国"
+    c.Talk()      // 这两条语句等价
+    c.Person.Talk()
+}
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>方法重载</h2>
+<pre>
+<code class="golang">
+func (c *Citizen) Talk() {
+    fmt.Println("Hello, my name is", c.Name, "and I'm from", c.Country)
+}
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>多态</h2>
+<pre>
+<code class="golang">
+func SpeakTo(p *Person) {
+    p.Talk()
+}
+func main() {
+    p := Person{Name: "阿凡提"}
+    c := Citizen{Person: Person{Name: "买买提"}, Country: "中国"}
+
+    SpeakTo(&p)
+    SpeakTo(&c)
+}
+
+>  Running it will result in
+>  prog.go:48: cannot use c (type *Citizen) as type *Person in function argument
+>  [process exited with non-zero status]
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>Interface</h2>
+<ul class="moveIn">
+<li><p>Golang duck-typing</p>
+<pre>
+<code class="golang">
+type Human interface {
+  Talk()
+}
+func SpeakTo(h Human) {
+  h.Talk()
+}
+func main() {
+  p := Person{Name: "阿凡提"}
+  c := Citizen{Person: Person{Name: "买买提"}, Country: "中国"}
+
+  SpeakTo(&p)
+  SpeakTo(&c)
+}
+</code>
+</pre></li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>谢谢大家</h2>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>One more thing</h2>
+<ul class="moveIn">
+<li>Golang 函数式编程</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>函数一等公民</h2>
+<pre>
+<code class="golang">
+type AddFunc func(a int) int
+
+func add1(a int) int {
+  return a + 1
+}
+func add2(a int) int  {
+  return a + 2
+}
+
+func compose(f, g AddFunc) AddFunc {
+
+  return func (x int) int {
+    return f(g(x))
+  }
+}
+
+func main() {
+
+  add3 := compose(add1, add2)
+
+  fmt.Printf("sum =%d", add3(2))
+
+}
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"></section></slide>
+        
+
+        <!-- <slide class="slide logoslide dark nobackground">
+            <article class="flexbox vcenter">
+                <h2 style="color: white;">Powered By nodePPT v1.4.1</h2>
+            </article>
+        </slide> -->
+        <div class="slideTip" id="tip"></div>
+    </slides>
+</div>
+<canvas id="drawBoard" class="draw-board" width="900" height="700"></canvas>
+<div class="progress"><span id="progress"></span></div>
+<div id="_buttons">
+    <div class="_btn-box" id="_btn-box" style="display:none;">
+        <button class="fa fa-arrow-circle-left" id="_btn-prev"></button>
+        <button class="fa fa-arrow-circle-right" id="_btn-next"></button>
+        <button class="fa fa-paint-brush" id="_btn-brush"></button>
+        <button class="fa fa-compress" id="_btn-overview" data-toggle="fa fa-expand"></button>
+    </div>
+    <button class="fa fa-bars" id="_btn-bar"  data-toggle="fa fa-close"></button>
+</div>
+<script src="./js/mixjs/lib/mix.0.3.0.min.js"></script>
+<script>
+var base = location.protocol + '//' + location.host;
+
+var path = (location.pathname + '#').split('/').filter(function(v){
+    return !!v;
+});
+path.pop();
+path = path.join('/');
+MixJS.config({
+    baseURL: [ base, path, 'js'].join('/')+'/'
+});
+
+</script>
+<script src="./js/mixjs/lib/event/broadcast.js"></script>
+<script src="./js/nodeppt.js"></script>
+<script>
+Slide.init({
+    containerID: 'container',
+    drawBoardID: 'drawBoard',
+    slideClass: '.slide',
+    buildClass: '.build',
+    progressID: 'progress',
+    transition: 'zoomin',
+    width: 1100,
+    dir: './',
+    
+    //打开下面的注释就开启postMessage方式
+    //访问网址127.0.0.1:8080/ppt/demo#client
+    control:{
+        type: 'postMessage',
+        args:{
+            isControl:  false
+        }
+    },
+    
+    tipID: 'tip'
+});
+MixJS.loadJS('highlight/highlight.pack.js',function(){
+    hljs.tabReplace = '  ';
+    hljs.initHighlightingOnLoad();
+});
+</script>
+
+
+<!--placeholder-->
+</body>
+</html>
