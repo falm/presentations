@@ -1,0 +1,259 @@
+<!--
+    Powered By nodePPT - This is probably the best web presentation tool so far!
+    version: 1.4.1
+    site: https://github.com/ksky521/nodePPT
+    date: 
+-->
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ruby Object &amp; Class - By Jason Hou</title>
+    <link rel="stylesheet" media="all" href="./css/nodeppt.css">
+    <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="./css/phone.css">
+    
+    <link rel="stylesheet" href="./js/highlight/styles/monokai_sublime.css">
+    <link rel="stylesheet" href="./css/font-awesome.css">
+    
+<link rel="stylesheet" href="./css/theme.dark.css">
+</head>
+<body>
+<div class="slides">
+    <slides id="container">
+        <slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>Ruby对象与类的实现</h1>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>对象</h2>
+
+</hgroup><article>
+
+<img src="http://bachue.github.io/ruby-under-a-microscope-introduction-slides/img/r_object.png" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>RObject结构体</h2>
+<ul>
+<li><strong>RBasic</strong> 中的 flags存储内部专有值</li>
+<li><strong>RBasic</strong> 中的klass指针，用于指向RObject所属于的类</li>
+<li><strong>numiv</strong> 实例变量的数量</li>
+<li><strong>ivptr</strong> 实例变量值的数组</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>实例</h2>
+
+</hgroup><article>
+
+<pre>
+<code class="ruby">
+class Mathematician
+  attr_accessor :first_name
+  attr_accessor :last_name
+end
+
+euler = Mathematician.new
+euler.first_name = 'Leonhard'
+euler.last_name = 'Euler'
+
+euclid = Mathematician.new
+euclid.first_name = 'Euclid'
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>实例</h2>
+
+</hgroup><article>
+
+<img src="http://upload-images.jianshu.io/upload_images/1767848-32ebb5e9a9346ee9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h1>内置对象</h1>
+
+</hgroup><article>
+
+<img src="http://upload-images.jianshu.io/upload_images/1767848-9ae270a31518de40.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h1>立即值</h1>
+
+</hgroup><article>
+
+<img src="http://upload-images.jianshu.io/upload_images/1767848-95923855e98719b0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h1>类</h1>
+
+</hgroup><article>
+
+<img src="http://upload-images.jianshu.io/upload_images/1767848-78005ae411a8ddf3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h1>类结构</h1>
+
+</hgroup><article>
+
+<ul>
+<li><strong>m_tal</strong>   用于存储类的实例方法表</li>
+<li><strong>iv_index_tbl</strong> 实例变量的名称，实例变量的值是存放在<strong>RObject</strong>中的</li>
+<li><strong>super</strong> 指向超类的指针</li>
+<li><strong>iv_tbl</strong> 类实例变量表</li>
+<li><strong>const_tbl</strong> 常量表</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h1>元类</h1>
+
+</hgroup><article>
+
+<img src="http://upload-images.jianshu.io/upload_images/1767848-49246ce8ee150356.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="singleton_class">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h1>模块</h1>
+
+</hgroup><article>
+
+<img src="http://bachue.github.io/ruby-under-a-microscope-introduction-slides/img/r_class_for_module.png" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<pre>
+<code class="ruby">
+module Professor
+end
+class Mathematican < Person
+  include Professor
+end
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<img src="http://bachue.github.io/ruby-under-a-microscope-introduction-slides/img/include_a_module_in_class.png" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h1>方法查找</h1>
+
+</hgroup><article>
+
+<img src="http://upload-images.jianshu.io/upload_images/1767848-6d11272f109b39bf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/720" alt="ruby_method_lookup.png">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<ul>
+<li>全局方法缓存</li>
+<li>内联方法缓存</li>
+<li>共享方法表</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h1>prepend</h1>
+
+</hgroup><article>
+
+<img src="http://bachue.github.io/ruby-under-a-microscope-introduction-slides/img/prepend_module_in_class.png" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>常量查找</h1>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h1>词法作用域</h1>
+
+</hgroup><article>
+
+<img src="http://bachue.github.io/ruby-under-a-microscope-introduction-slides/img/lexical_scope.png" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h1>Autoload</h1>
+
+</hgroup><article>
+
+<img src="http://upload-images.jianshu.io/upload_images/1767848-0b793e17f77cf926.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="ruby_cons_lp.png">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>谢谢大家</h1>
+
+</article></section></slide>
+        
+
+        <!-- <slide class="slide logoslide dark nobackground">
+            <article class="flexbox vcenter">
+                <h2 style="color: white;">Powered By nodePPT v1.4.1</h2>
+            </article>
+        </slide> -->
+        <div class="slideTip" id="tip"></div>
+    </slides>
+</div>
+<canvas id="drawBoard" class="draw-board" width="900" height="700"></canvas>
+<div class="progress"><span id="progress"></span></div>
+<div id="_buttons">
+    <div class="_btn-box" id="_btn-box" style="display:none;">
+        <button class="fa fa-arrow-circle-left" id="_btn-prev"></button>
+        <button class="fa fa-arrow-circle-right" id="_btn-next"></button>
+        <button class="fa fa-paint-brush" id="_btn-brush"></button>
+        <button class="fa fa-compress" id="_btn-overview" data-toggle="fa fa-expand"></button>
+    </div>
+    <button class="fa fa-bars" id="_btn-bar"  data-toggle="fa fa-close"></button>
+</div>
+<script src="./js/mixjs/lib/mix.0.3.0.min.js"></script>
+<script>
+var base = location.protocol + '//' + location.host;
+
+var path = (location.pathname + '#').split('/').filter(function(v){
+    return !!v;
+});
+path.pop();
+path = path.join('/');
+MixJS.config({
+    baseURL: [ base, path, 'js'].join('/')+'/'
+});
+
+</script>
+<script src="./js/mixjs/lib/event/broadcast.js"></script>
+<script src="./js/nodeppt.js"></script>
+<script>
+Slide.init({
+    containerID: 'container',
+    drawBoardID: 'drawBoard',
+    slideClass: '.slide',
+    buildClass: '.build',
+    progressID: 'progress',
+    transition: 'cycle',
+    width: 1100,
+    dir: './',
+    
+    //打开下面的注释就开启postMessage方式
+    //访问网址127.0.0.1:8080/ppt/demo#client
+    control:{
+        type: 'postMessage',
+        args:{
+            isControl:  false
+        }
+    },
+    
+    tipID: 'tip'
+});
+MixJS.loadJS('highlight/highlight.pack.js',function(){
+    hljs.tabReplace = '  ';
+    hljs.initHighlightingOnLoad();
+});
+</script>
+
+
+<!--placeholder-->
+</body>
+</html>
