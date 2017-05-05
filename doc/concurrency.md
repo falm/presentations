@@ -84,13 +84,17 @@ transition: slide
 [slide]
 ----
 ![](http://blog.scottlogic.com/rdoyle/assets/ActorModel.png)
+
 [slide]
+
 ## Actor模型的实现
 ----
 - Erlang/Elixir
 - Akka(JVM)
 - Celluloid(ruby)
+
 [slide]
+
 ## Golang CSP & Actor
 ----
 ![](http://www.jdon.com/simgs/performance/csp.png)
