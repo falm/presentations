@@ -1,0 +1,311 @@
+<!--
+    Powered By nodePPT - This is probably the best web presentation tool so far!
+    version: 1.4.1
+    site: https://github.com/ksky521/nodePPT
+    date: 
+-->
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Json Web Token - By Jason Hou</title>
+    <link rel="stylesheet" media="all" href="./css/nodeppt.css">
+    <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="./css/phone.css">
+    
+    <link rel="stylesheet" href="./js/highlight/styles/monokai_sublime.css">
+    <link rel="stylesheet" href="./css/font-awesome.css">
+    
+<link rel="stylesheet" href="./css/theme.dark.css">
+</head>
+<body>
+<div class="slides">
+    <slides id="container">
+        <slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>JWT (JSON Web Token)</h1>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>服务器端用户验证</h2>
+
+</hgroup><article>
+
+<ul>
+<li>基于Cookie</li>
+<li>基于Token</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>基于Cookie</h2>
+
+</hgroup><article>
+
+<img src="http://codastic.github.io/talk-jwt/figures/cookie_api_request.svg" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>遇到的问题</h2>
+
+</hgroup><article>
+
+<ul>
+<li>CORS</li>
+<li>Session</li>
+<li>CSRF</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>基于Token</h2>
+
+</hgroup><article>
+
+<img src="http://codastic.github.io/talk-jwt/figures/token_api_request.svg" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>Token优势</h2>
+
+</hgroup><article>
+
+<ul>
+<li>性能(相对)</li>
+<li>扩展性</li>
+<li>CSRF/CORS</li>
+<li>多终端支持</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>传统Token依然存在的问题</h2>
+
+</hgroup><article>
+
+<ul>
+<li>性能: 数据库存储token及过期时间</li>
+<li>扩展: 每个服务都需要，集成token验证代码</li>
+<li>安全: token可以被篡改请求</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>JWT</h2>
+
+</hgroup><article>
+
+<ul>
+<li>无状态</li>
+<li>性能</li>
+<li>标准化</li>
+<li>安全</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"   data-on-build="Slide.magic" data-on-enter="Slide.magic.init"><section class="slide-wrapper"><div class="magic"><div class="magicItem current pagedown"  data-transition="zoomin"><article>
+<div class="magic-wrapper">
+<article>
+<h2>JWT结构</h2>
+<p>xxx.yyy.zzz</p>
+
+</article>
+</div>
+</article></div>
+<div class="magicItem next pagedown"  data-transition="zoomin"><article>
+<div class="magic-wrapper">
+<article>
+<p><span style="color: green">
+(base64-encoded header)
+</span>
+.
+<span style="color: yellow">
+(base64-encoded payload)
+</span>
+.
+<span style="color: red">
+(encrypt signature)
+</span></p>
+
+</article>
+</div>
+</article></div></div></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<p><span style="color: green">
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</p>
+<p></span>
+.
+<span style="color: yellow">
+yJ1c2VyX2tleSI6Inh4eHh4eHh4eHh4eHh4eHgiLCJleHAiOjE0MDc4MjkyNjgsImlhdCI6MTQwNzgyMjA2OCwiYWRtaW4iOnRydWV9
+</span>
+.
+<span style="color: red">
+JiRQIZojC6DTBM607e1fyxP0bmDSE_STuNxV-f4-7Qk
+</span></p>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>Header</h2>
+
+</hgroup><article>
+
+<p><span style="color: green">
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+</span></p>
+<pre>
+<code class="json">
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<ul>
+<li><strong>typ</strong> : JWT</li>
+<li><strong>alg</strong> : 加密算法</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>Payload</h2>
+
+</hgroup><article>
+
+<p><span style="color: yellow">
+yJ1c2VyX2tleSI6Inh4eHh4eHh4eHh4eHh4eHgiLCJleHAiOjE0MDc4MjkyNjgsImlhdCI6MTQwNzgyMjA2OCwiYWRtaW4iOnRydWV9
+</span></p>
+<pre>
+<code class="json">
+{
+  "user_key": 'xxxxxxxxxxxxxxxx',
+  "exp": 1407829268,
+  "iat": 1407822068,
+  "admin": true
+}
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<pre>
+<code class="json">
+{
+    "iss" : "JWT-Rails-Server", // 签发者
+    "aud" : "www.baidu.com", // 接收者
+    "iat" : 1472263256, // JWT 签发的时间
+    "exp" : 1472522525, // 过期时间
+    "sub" : "jwt@baidu.com" // JWT对应的用户 
+    "userId" : 1211 // 自定义
+}
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>JWS Signature</h2>
+
+</hgroup><article>
+
+<p><span style="color: red">
+JiRQIZojC6DTBM607e1fyxP0bmDSE_STuNxV-f4-7Qk
+</span></p>
+<pre>
+<code class="javascript">
+HMACSHA256(
+    base64UrlEncode(header) + "." +
+    base64UrlEncode(payload),
+    "supersafe_secret"
+)
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>使用</h2>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>注意</h2>
+
+</hgroup><article>
+
+<ul>
+<li>登出</li>
+<li>载荷(payload)数据比较过的，避免token过长</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>总结</h2>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>谢谢大家</h1>
+
+</article></section></slide>
+        
+
+        <!-- <slide class="slide logoslide dark nobackground">
+            <article class="flexbox vcenter">
+                <h2 style="color: white;">Powered By nodePPT v1.4.1</h2>
+            </article>
+        </slide> -->
+        <div class="slideTip" id="tip"></div>
+    </slides>
+</div>
+<canvas id="drawBoard" class="draw-board" width="900" height="700"></canvas>
+<div class="progress"><span id="progress"></span></div>
+<div id="_buttons">
+    <div class="_btn-box" id="_btn-box" style="display:none;">
+        <button class="fa fa-arrow-circle-left" id="_btn-prev"></button>
+        <button class="fa fa-arrow-circle-right" id="_btn-next"></button>
+        <button class="fa fa-paint-brush" id="_btn-brush"></button>
+        <button class="fa fa-compress" id="_btn-overview" data-toggle="fa fa-expand"></button>
+    </div>
+    <button class="fa fa-bars" id="_btn-bar"  data-toggle="fa fa-close"></button>
+</div>
+<script src="./js/mixjs/lib/mix.0.3.0.min.js"></script>
+<script>
+var base = location.protocol + '//' + location.host;
+
+var path = (location.pathname + '#').split('/').filter(function(v){
+    return !!v;
+});
+path.pop();
+path = path.join('/');
+MixJS.config({
+    baseURL: [ base, path, 'js'].join('/')+'/'
+});
+
+</script>
+<script src="./js/mixjs/lib/event/broadcast.js"></script>
+<script src="./js/nodeppt.js"></script>
+<script>
+Slide.init({
+    containerID: 'container',
+    drawBoardID: 'drawBoard',
+    slideClass: '.slide',
+    buildClass: '.build',
+    progressID: 'progress',
+    transition: 'cycle',
+    width: 1100,
+    dir: './',
+    
+    //打开下面的注释就开启postMessage方式
+    //访问网址127.0.0.1:8080/ppt/demo#client
+    control:{
+        type: 'postMessage',
+        args:{
+            isControl:  false
+        }
+    },
+    
+    tipID: 'tip'
+});
+MixJS.loadJS('highlight/highlight.pack.js',function(){
+    hljs.tabReplace = '  ';
+    hljs.initHighlightingOnLoad();
+});
+</script>
+
+
+<!--placeholder-->
+</body>
+</html>
