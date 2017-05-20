@@ -1,0 +1,193 @@
+<!--
+    Powered By nodePPT - This is probably the best web presentation tool so far!
+    version: 1.4.1
+    site: https://github.com/ksky521/nodePPT
+    date: 
+-->
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ruby Memory - By Jason Hou</title>
+    <link rel="stylesheet" media="all" href="./css/nodeppt.css">
+    <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="./css/phone.css">
+    
+    <link rel="stylesheet" href="./js/highlight/styles/monokai_sublime.css">
+    <link rel="stylesheet" href="./css/font-awesome.css">
+    
+<link rel="stylesheet" href="./css/theme.dark.css">
+</head>
+<body>
+<div class="slides">
+    <slides id="container">
+        <slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>Ruby Memory</h1>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>问题</h2>
+
+</hgroup><article>
+
+<ul>
+<li>Ruby的内存结构是什么样？</li>
+<li>为什么Ruby应用非常吃内存?</li>
+<li>有什么方法可以优化内存使用？</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>内存结构</h2>
+
+</hgroup><article>
+
+<img src="http://upload-images.jianshu.io/upload_images/1767848-b9038945718dbbf4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="memory-structure">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>组成部分</h2>
+
+</hgroup><article>
+
+<ul>
+<li><strong>栈</strong> 指针</li>
+<li><strong>堆</strong> 25/heap_page 10_000/slot</li>
+<li><strong>heap page</strong> 408/slot   HEAP_OBJ_LIMIT</li>
+<li><strong>slot</strong> : 40bytes的RVALUE(RObject...)   GC_HEAP_INIT_SLOTS</li>
+<li><strong>系统堆</strong> : 数据</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"   data-on-build="Slide.magic" data-on-enter="Slide.magic.init"><section class="slide-wrapper"><div class="magic"><div class="magicItem current pagedown"  data-transition="zoomin"><article>
+<div class="magic-wrapper">
+<article>
+<h2>为什么吃内存</h2>
+
+</article>
+</div>
+</article></div>
+<div class="magicItem next pagedown"  data-transition="zoomin"><article>
+<div class="magic-wrapper">
+<article>
+<img src="https://collectiveidea.com/assets/malloc_memory_fragmentation.png?size=fit_in_blog_postk" alt="">
+
+</article>
+</div>
+</article></div>
+<div class="magicItem far-next pagedown"  data-transition="zoomin"><article>
+<div class="magic-wrapper">
+<article>
+<h2>RUBY_GC_HEAP_GROWTH_FACTOR 1.8</h2>
+
+</article>
+</div>
+</article></div></div></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>优化</h2>
+
+</hgroup><article>
+
+<ul>
+<li>参数优化</li>
+<li>程序优化</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>参数优化</h2>
+
+</hgroup><article>
+
+<ul>
+<li><strong>RUBY_GC_HEAP_INIT_SLOTS</strong>: Ruby初始化slots数量，数量越大后续malloc次数越小</li>
+<li><strong>RUBY_GC_HEAP_GROWTH_FACTOR</strong>: 内存分配增长因子</li>
+<li><strong>RUBY_GC_MALLOC_LIMIT</strong>: GC触发条件之一, 分配内存超过限制后运行GC</li>
+<li><strong>RUBY_GC_HEAP_FREE_SLOTS</strong>: 对堆空间free slot少于该参数是 触发GC</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>总结</h2>
+
+</hgroup><article>
+
+<ul>
+<li><strong>核心参数</strong></li>
+<li><strong>内存结构</strong></li>
+<li><strong>GC</strong></li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>谢谢大家</h1>
+
+</article></section></slide>
+        
+
+        <!-- <slide class="slide logoslide dark nobackground">
+            <article class="flexbox vcenter">
+                <h2 style="color: white;">Powered By nodePPT v1.4.1</h2>
+            </article>
+        </slide> -->
+        <div class="slideTip" id="tip"></div>
+    </slides>
+</div>
+<canvas id="drawBoard" class="draw-board" width="900" height="700"></canvas>
+<div class="progress"><span id="progress"></span></div>
+<div id="_buttons">
+    <div class="_btn-box" id="_btn-box" style="display:none;">
+        <button class="fa fa-arrow-circle-left" id="_btn-prev"></button>
+        <button class="fa fa-arrow-circle-right" id="_btn-next"></button>
+        <button class="fa fa-paint-brush" id="_btn-brush"></button>
+        <button class="fa fa-compress" id="_btn-overview" data-toggle="fa fa-expand"></button>
+    </div>
+    <button class="fa fa-bars" id="_btn-bar"  data-toggle="fa fa-close"></button>
+</div>
+<script src="./js/mixjs/lib/mix.0.3.0.min.js"></script>
+<script>
+var base = location.protocol + '//' + location.host;
+
+var path = (location.pathname + '#').split('/').filter(function(v){
+    return !!v;
+});
+path.pop();
+path = path.join('/');
+MixJS.config({
+    baseURL: [ base, path, 'js'].join('/')+'/'
+});
+
+</script>
+<script src="./js/mixjs/lib/event/broadcast.js"></script>
+<script src="./js/nodeppt.js"></script>
+<script>
+Slide.init({
+    containerID: 'container',
+    drawBoardID: 'drawBoard',
+    slideClass: '.slide',
+    buildClass: '.build',
+    progressID: 'progress',
+    transition: 'cycle',
+    width: 1100,
+    dir: './',
+    
+    //打开下面的注释就开启postMessage方式
+    //访问网址127.0.0.1:8080/ppt/demo#client
+    control:{
+        type: 'postMessage',
+        args:{
+            isControl:  false
+        }
+    },
+    
+    tipID: 'tip'
+});
+MixJS.loadJS('highlight/highlight.pack.js',function(){
+    hljs.tabReplace = '  ';
+    hljs.initHighlightingOnLoad();
+});
+</script>
+
+
+<!--placeholder-->
+</body>
+</html>
