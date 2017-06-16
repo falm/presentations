@@ -1,0 +1,243 @@
+<!--
+    Powered By nodePPT - This is probably the best web presentation tool so far!
+    version: 1.4.1
+    site: https://github.com/ksky521/nodePPT
+    date: 
+-->
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ruby Hash - By Jason Hou</title>
+    <link rel="stylesheet" media="all" href="./css/nodeppt.css">
+    <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="./css/phone.css">
+    
+    <link rel="stylesheet" href="./js/highlight/styles/monokai_sublime.css">
+    <link rel="stylesheet" href="./css/font-awesome.css">
+    
+<link rel="stylesheet" href="./css/theme.moon.css">
+</head>
+<body>
+<div class="slides">
+    <slides id="container">
+        <slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>Ruby 哈希表</h1>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>索引</h2>
+
+</hgroup><article>
+
+<ul>
+<li>Ruby Hash的内部结构</li>
+<li>Ruby Hash工作方式</li>
+<li>Ruby Hash的优化和改进</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"   data-on-build="Slide.magic" data-on-enter="Slide.magic.init"><section class="slide-wrapper"><div class="magic"><div class="magicItem current pagedown"  data-transition="zoomin"><article>
+<div class="magic-wrapper">
+<article>
+<h2>内部结构</h2>
+
+</article>
+</div>
+</article></div>
+<div class="magicItem next pagedown"  data-transition="zoomin"><article>
+<div class="magic-wrapper">
+<article>
+<img src="http://upload-images.jianshu.io/upload_images/1767848-db54507480b8e365.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="">
+
+</article>
+</div>
+</article></div>
+<div class="magicItem far-next pagedown"  data-transition="zoomin"><article>
+<div class="magic-wrapper">
+<article>
+<img src="http://upload-images.jianshu.io/upload_images/1767848-e40c2a71dda1dc5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="">
+
+</article>
+</div>
+</article></div></div></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>工作方式</h2>
+
+</hgroup><article>
+
+<ul>
+<li>链地址法解决冲突</li>
+<li>MurmurHash 散列函数, 每次重启应用生成随机种子</li>
+<li>重新散列, 链地址长度5个限制</li>
+<li>散列扩容</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>链地址法</h2>
+
+</hgroup><article>
+
+<img src="https://ruby-china-files.b0.upaiyun.com/photo/2017/1738a6f05673cb5cdefe03ba6eb41c95.svg" alt="memory-structure">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>散列扩容</h2>
+
+</hgroup><article>
+
+<pre>
+<code class="c">
+/* st.c */
+/* Table of prime numbers 2^n+a, 2<=n<=30. */
+static const unsigned int primes[] = {
+  8 + 3,
+  16 + 3,
+  32 + 5,
+  64 + 3,
+  128 + 3,
+  256 + 27,
+  512 + 9,
+  ...
+}
+</code>
+</pre>
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article>
+<h2>优化和改进</h2>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>Ruby 2.0</h2>
+
+</hgroup><article>
+
+<img src="http://upload-images.jianshu.io/upload_images/1767848-00b21e694b5076c1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>Ruby 2.2</h2>
+
+</hgroup><article>
+
+<ul>
+<li>按照2^n扩容, 初始值16</li>
+<li>去除质数取模, #define hash_pos(h,n) ((h) &amp; (n - 1))</li>
+</ul>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>Ruby 2.4</h2>
+
+</hgroup><article>
+
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>开放地址法</h2>
+
+</hgroup><article>
+
+<img src="https://ruby-china-files.b0.upaiyun.com/photo/2017/59d8cd8013d80c6a9f47cf0ce00d5620.svg" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>线性同余方法(LCG)</h2>
+
+</hgroup><article>
+
+<blockquote>
+<p>Xn+1 = (a * Xn + c ) % m</p>
+</blockquote>
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><hgroup>
+<h2>Benchmark</h2>
+
+</hgroup><article>
+
+<img src="https://ruby-china-files.b0.upaiyun.com/photo/2017/01a016cdd47aa652a684c79a6a5bdb56.png!large" alt="">
+
+</article></section></slide>
+<slide class="slide"><section class="slide-wrapper"><article class="flexbox vcenter">
+<h1>谢谢大家</h1>
+
+</article></section></slide>
+        
+
+        <!-- <slide class="slide logoslide dark nobackground">
+            <article class="flexbox vcenter">
+                <h2 style="color: white;">Powered By nodePPT v1.4.1</h2>
+            </article>
+        </slide> -->
+        <div class="slideTip" id="tip"></div>
+    </slides>
+</div>
+<canvas id="drawBoard" class="draw-board" width="900" height="700"></canvas>
+<div class="progress"><span id="progress"></span></div>
+<div id="_buttons">
+    <div class="_btn-box" id="_btn-box" style="display:none;">
+        <button class="fa fa-arrow-circle-left" id="_btn-prev"></button>
+        <button class="fa fa-arrow-circle-right" id="_btn-next"></button>
+        <button class="fa fa-paint-brush" id="_btn-brush"></button>
+        <button class="fa fa-compress" id="_btn-overview" data-toggle="fa fa-expand"></button>
+    </div>
+    <button class="fa fa-bars" id="_btn-bar"  data-toggle="fa fa-close"></button>
+</div>
+<script src="./js/mixjs/lib/mix.0.3.0.min.js"></script>
+<script>
+var base = location.protocol + '//' + location.host;
+
+var path = (location.pathname + '#').split('/').filter(function(v){
+    return !!v;
+});
+path.pop();
+path = path.join('/');
+MixJS.config({
+    baseURL: [ base, path, 'js'].join('/')+'/'
+});
+
+</script>
+<script src="./js/mixjs/lib/event/broadcast.js"></script>
+<script src="./js/nodeppt.js"></script>
+<script>
+Slide.init({
+    containerID: 'container',
+    drawBoardID: 'drawBoard',
+    slideClass: '.slide',
+    buildClass: '.build',
+    progressID: 'progress',
+    transition: 'slide3',
+    width: 1100,
+    dir: './',
+    
+    //打开下面的注释就开启postMessage方式
+    //访问网址127.0.0.1:8080/ppt/demo#client
+    control:{
+        type: 'postMessage',
+        args:{
+            isControl:  false
+        }
+    },
+    
+    tipID: 'tip'
+});
+MixJS.loadJS('highlight/highlight.pack.js',function(){
+    hljs.tabReplace = '  ';
+    hljs.initHighlightingOnLoad();
+});
+</script>
+
+
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  config: ["TeX-AMS-MML_HTMLorMML.js"],
+  tex2jax: {inlineMath: [['\\(','\\)']]}});
+  //['$','$'], 避免货币价格冲突
+</script>
+<script type="text/javascript" src="./js/mathjax/MathJax.js"></script>
+
+<!--placeholder-->
+</body>
+</html>
