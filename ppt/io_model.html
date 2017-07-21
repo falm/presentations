@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>I&#x2F;O模型</title>
+		<style>
+			body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+h1, h2, h3 {
+	font-weight: 400;
+	margin-bottom: 0;
+}
+.remark-slide-content h1 { font-size: 3em; }
+.remark-slide-content h2 { font-size: 2em; }
+.remark-slide-content h3 { font-size: 1.6em; }
+.footnote {
+	position: absolute;
+	bottom: 3em;
+}
+li p { line-height: 1.25em; }
+.red { color: #fa0000; }
+.large { font-size: 2em; }
+a, a > code {
+	color: rgb(249, 38, 114);
+	text-decoration: none;
+}
+code {
+	background: none repeat scroll 0 0 #F8F8FF;
+  border: 1px solid #DEDEDE;
+  border-radius: 3px 	;
+  padding: 0 0.2em;
+}
+.remark-code, .remark-inline-code { font-family: "Bitstream Vera Sans Mono", "Courier", monospace; }
+.remark-code-line-highlighted     { background-color: #373832; }
+.pull-left {
+	float: left;
+	width: 47%;
+}
+.pull-right {
+	float: right;
+	width: 47%;
+}
+.pull-right ~ p {
+	clear: both;
+}
+#slideshow .slide .content code {
+	font-size: 0.8em;
+}
+#slideshow .slide .content pre code {
+	font-size: 0.9em;
+	padding: 15px;
+}
+.main-title, .title {
+	background: #272822;
+	color: #777872;
+	text-shadow: 0 0 20px #333;
+}
+.title h1, .title h2, .main-title h1, .main-title h2 {
+	color: #f3f3f3;
+	line-height: 0.8em;
+}
+/* Custom */
+.remark-code {
+	display: block;
+	padding: 0.5em;
+}
+
+		</style>
+	</head>
+	<body>
+		<textarea id="source">
+
+class: center, middle
+
+
+# I/O模型
+
+---
+## 大纲
+
+- 操作系统I/O模型分类
+- 每种I/O模型在服务端的应用
+- I/O模型的性能比较和发展
+
+---
+## 同步阻塞I/O
+
+![](http://my.csdn.net/uploads/201204/12/1334216532_9745.jpg)
+
+---
+## 应用
+
+- Rack CGI, Webrick
+
+```ruby
+TCPServer.open("127.0.0.1", 14641) {|server|
+  s = server.accept
+  s.puts Time.now
+  s.close
+}
+```
+
+---
+
+## 同步非阻塞I/O
+
+![](http://my.csdn.net/uploads/201204/12/1334216607_3004.jpg)
+
+---
+
+## 应用
+```ruby
+server = TCPServer.new(2202)
+begin
+  sock = server.accept_nonblock
+rescue IO::WaitReadable, Errno::EINTR
+  IO.select([server])
+  retry
+end
+```
+
+---
+
+## I/O 多路复用
+
+![](http://my.csdn.net/uploads/201204/12/1334216620_6310.jpg)
+
+---
+
+## 系统调用
+
+* select/poll O(n)
+* epoll/kqueue O(1)
+
+--
+
+- Nginx
+- EventMachine
+- Redis
+- Node.js
+
+
+---
+
+## Redis Reactor
+![](http://1e-gallery.redisbook.com/_images/graphviz-3c09f0e53bd9d786aa646e5e4c289a11d97d40d7.png)
+
+---
+
+## 信号驱动I/O
+![](http://my.csdn.net/uploads/201204/12/1334216632_6025.jpg)
+
+---
+## 异步I/O
+![](http://my.csdn.net/uploads/201204/12/1334216641_7821.jpg)
+
+---
+## AIO
+
+- linux POSIX AIO: libeio, glibc libaio 
+- windows IOCP
+--
+![](http://upload-images.jianshu.io/upload_images/1767848-e956abb035d567ec.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+---
+
+## nginx
+![](http://cdn2.infoqstatic.com/statics_s2_20170620-0701/resource/articles/thread-pools-boost-performance-9x/zh/resources/0622006.jpg)
+
+---
+## 比较
+
+![](http://my.csdn.net/uploads/201204/12/1334216724_2405.jpg)
+
+---
+
+## 网络库
+
+- libevent : c
+- libev : c++
+- libuv : c++
+
+
+--
+
+## Ruby
+- **EventMachine** : 自建
+- **nio4r** : libev
+
+---
+
+# 谢谢大家 Q&A
+
+		</textarea>
+		<script src="https://gnab.github.io/remark/downloads/remark-latest.min.js"></script>
+		<script>
+			var slideshow = remark.create();
+		</script>
+		<script></script>
+	</body>
+</html>
