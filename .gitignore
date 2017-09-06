@@ -8,3 +8,4 @@
 out
 gen
 *.un~
+.DS_Store
