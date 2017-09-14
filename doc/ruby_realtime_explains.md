@@ -1,23 +1,28 @@
-# Ruby Web实时通讯方案剖析
+## Ruby Web实时通讯方案剖析
 
-侯俊杰 @薄荷
-
-2017.9.16
+<span style="font-size: 30px;width: 80%">侯俊杰</span>
 
 ---
 
 
-## 关于我
+<!-- ## 关于我 -->
 
-<div style="display: flex;margin-top: 100px;">
+<div style="display: flex;margin-top: 10px;justify-content: space-around;">
 
-<img src="http://upload-images.jianshu.io/upload_images/1767848-cb97cc54f694c7a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" style="border:none;background: none;width: 300px; height: 300px" />
+<img src="http://upload-images.jianshu.io/upload_images/1767848-cb97cc54f694c7a2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" style="width: 300px; height: 300px" />
 
-<ul class='about-me', style="font-size: 30px;display: flex;flex-direction: column;justify-content: center; text-align: right;list-style: none">
-<li>侯俊杰@falm</li>
-<li>全栈程序员</li>
-<li>github.com/falm</li>
-<li>薄荷科技 - 健康领域领先的移动互联网公司</li>
+<ul class='about-me'>
+<li>侯俊杰</li>
+<li>github: **@falm**</li>
+<li>email: **houjunjie@boohee.com**</li>
+<li>
+  <img 
+    src="http://upload-images.jianshu.io/upload_images/1767848-e7bd78ad36452a8b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+    style="height: 20px;width: 20px;vertical-align: -15px;" 
+  >
+  薄荷科技 - Ruby工程师
+  <!-- 薄荷科技 - 健康领域领先的移动互联网公司 -->
+</li>
 </ul>
 
 
@@ -25,20 +30,86 @@
 </div>
 
 
----
+----
 
-## 薄荷
-
-<!-- ![image.png](http://upload-images.jianshu.io/upload_images/1767848-a276a35aafaeb02d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
-
-![image.png](http://upload-images.jianshu.io/upload_images/1767848-0fafab09d37cd4ee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+```php
+    public function index(){
+      define('LISTROW',$this->LISTROWS);
+      $db = D("Market");
+      import("ORG.Util.Page");
+      $count = $db->count();
+      $Page = new Page($count,LISTROW);
+      $show = $Page->show();
+      $page = $_GET['p'] ? $_GET['p'] : 1; 
+      $sort = listSort($_GET['sort'],$_GET['way']);
+      $key = listSearchTP($_GET['field'],$_GET['key'],$_GET['searchWay']);
+      $list = $db->page($page.','.LISTROW)->where($key)->order($sort[0])->select();
+      $list = keyHighLight($list,$_GET['field'] ,$_GET['key']);
+      $this->assign("tabaleName",$db->getModelName());
+      $this->assign("way",$sort[1]);
+      $this->assign("list",$list);
+      $this->assign("show",$show);
+      $this->display();
+    }
+```
 
 ----
 
-## 薄荷
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-54dae4a814b54972.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+----
+
+![](http://upload-images.jianshu.io/upload_images/1767848-828404417b65f6bb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+----
+
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-6049ae2383dd1313.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-![image.png](http://upload-images.jianshu.io/upload_images/1767848-1a1740cbfe97f38c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+----
+
+![after](http://upload-images.jianshu.io/upload_images/1767848-15133d267c7536c7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+----
+
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-9c5463e927b5fe66.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+----
+
+## PHP是世界上最好的语言
+
+---
+
+<!-- .slide: data-background="http://upload-images.jianshu.io/upload_images/1767848-41dc2e39d477f792.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" -->
+
+健康领域领先的移动互联网公司
+
+<ul class='horizen'>
+<li>
+<img src="http://upload-images.jianshu.io/upload_images/1767848-fd73d10039f48853.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" class="bh_logo" />
+<div class="bh_desc">薄荷</div>
+</li>
+
+<li style="margin-right: 40px;">
+
+<img src="http://upload-images.jianshu.io/upload_images/1767848-962d4988e542ccb7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" class="bh_logo" />
+<div class="bh_desc">食物库</div>
+
+</li>
+
+</ul>
+
+---
+
+## 提纲
+
+<!-- * 为什么要做web实时通讯? -->
+
+* web实时通讯方案有哪些? <!-- .element: class="fragment fade-in" -->
+
+* 解决方案的工作机制和性能指标? <!-- .element: class="fragment fade-in" -->
+
+* 选择上有什么建议? <!-- .element: class="fragment fade-in" -->
 
 
 ---
@@ -46,9 +117,22 @@
 
 ## 为什么要做web实时通讯?
 
----
+----
 
-即时通讯需求的日益增长，薄荷在健康领域想要打造一款链接健康从业者和消费人群的工具，薄荷使用IM工具将两者联系在一起，针对这个需求，我们开发了集成在App内的通讯系统的功能。 
+<ul class='horizen'>
+<li>
+
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-5d4ed7f1226786ae.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+</li>
+
+<li style="margin-right: 40px;">
+
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-cc4e76b5d97a6e70.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+</li>
+
+</ul>
+
 
 
 ---
@@ -70,14 +154,9 @@
 
 ## 基于Http连接
 
-<!-- ---- -->
-
-<!-- 轮询  -->
-
-
 ----
 
-Polling & Comet & Long Polling
+Polling & Long Polling & Comet
 
 <ul class='horizen'>
 <li>
@@ -93,6 +172,9 @@ Polling & Comet & Long Polling
 </li>
 
 </ul>
+
+----
+![](http://upload-images.jianshu.io/upload_images/1767848-ffdd16a6e196aa11.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ----
 
@@ -121,7 +203,7 @@ Polling & Comet & Long Polling
 
 ## 第三方Socket服务
 
-* 云信, 环信, 融云
+* 环信, 融云, 云通信
 
 ----
 
@@ -129,17 +211,37 @@ Polling & Comet & Long Polling
 
 ![](https://camo.githubusercontent.com/99e623976fd7f8e3221a2dbfd7ab7674c0221f87/687474703a2f2f6465762e6e6574656173652e696d2f696d616765732f75706c6f61642f6e696d5f66756e632e706e67)
 
+
+----
+
+<ul class='horizen'>
+<li>
+![bh_app_store](http://upload-images.jianshu.io/upload_images/1767848-00d26939fb7bbd84.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+</li>
+<li>
+
+![bh_store_chat](http://upload-images.jianshu.io/upload_images/1767848-6af81df94b6d4656.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+</li>
+
+</ul>
+
+
 ----
 
 - 优点： 简单，功能丰富
-- 缺点： 集成复杂，无法定制配置，收费
+- 缺点： 定制困难, 收费
+
+----
+
+| DAU  | 环信       | 融云       | 云通信      |
+| ---- | -------- | -------- | -------- |
+| 50万  | 25,000/月 | 12,000/月 | 50,000/月 |
+
 
 ---
 
 ## WebSocket
 
-<!-- ![](https://heroku-blog-files.s3.amazonaws.com/posts/1473343847-1462551384-websocket-protocol.png) -->
-<!-- ![websocket](http://upload-images.jianshu.io/upload_images/1767848-19804b99abd1d75f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
 
 ![websocket](http://upload-images.jianshu.io/upload_images/1767848-b88a22e0284df9cf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) <!-- .element: class="fragment fade-in" -->
 
@@ -147,42 +249,39 @@ Polling & Comet & Long Polling
 
 ## 总结
 
-* **HTTP链接** 技术简单, 但体验差，技术陈旧
-* **第三方服务** 服务好，但是无法定制且收费不低
-* **WebSocket** 自建实时通讯的不二之选
+* **HTTP链接** - 技术简单, 但体验差，技术陈旧
+* **第三方云服务** - 功能强大, 服务稳定，但是无法定制且收费不低
+* **WebSocket** - 是自建实时通讯的不二之选
 
 ---
 
-## Ruby 有哪些Websocket解决方案?
+### Ruby有哪些Websocket解决方案?
 
-----
+---
 
 ## Ruby Websocket
 
 **ActionCable**  <!-- .element: class="fragment fade-in" -->
-<!-- <section> -->
-  <!-- <p class="fragment fade-in">**ActionCable**</p> -->
-<!-- </section> -->
 
 
 ---
 
 
 ## ActionCable
-* Rails5提供的新特性
-* Rails进行无缝结合
+* Rails5提供的新特性 <!-- .element: class="fragment fade-in"  -->
+* Rails进行无缝结合 <!-- .element: class="fragment fade-in"  -->
 
 ----
 
 ActionCable server 可单独运行，也可以与App Server一起运行
 
-![](https://heroku-blog-files.s3.amazonaws.com/posts/1473343848-1462551406-rails-rack.png)
+![actioncable architect](http://upload-images.jianshu.io/upload_images/1767848-34503a76637deab7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ----
 
 利用Redis，可扩展部署多台ActionCable Server
-<!-- ![](http://upload-images.jianshu.io/upload_images/1767848-26a65b267ee05710.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
-<img src="http://upload-images.jianshu.io/upload_images/1767848-26a65b267ee05710.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" style="background: none; border: none;"/>
+
+![actioncable scale](http://upload-images.jianshu.io/upload_images/1767848-5e52d008332c3424.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ----
 
@@ -192,24 +291,24 @@ ActionCable server 可单独运行，也可以与App Server一起运行
 
 ### Benchmark
 
-<!-- ![image.png](http://upload-images.jianshu.io/upload_images/1767848-b8e4a6311b4df9ff.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
-<!-- ![image.png](http://upload-images.jianshu.io/  upload_images/1767848-c097dead4827f34f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
 
-![image.png](http://upload-images.jianshu.io/upload_images/1767848-1fded2e7fe6f9b98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![actionCable](http://upload-images.jianshu.io/upload_images/1767848-492754e1be71dde5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+
+----
+
+
+调用栈
+
+![J](http://upload-images.jianshu.io/upload_images/1767848-a011dcc42eaf389c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 ----
 
 内部结构
 
-<!-- 内部使用 websocket-driver，nio4r和concurrent-ruby -->
-
-<!-- ![](http://upload-images.jianshu.io/upload_images/1767848-6c86e55598532ba6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
 ![image.png](http://upload-images.jianshu.io/upload_images/1767848-a344a9edd438ad35.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-
-<!-- ![](http://upload-images.jianshu.io/upload_images/1767848-8c84aca103892197.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
 
 ----
 
@@ -224,88 +323,57 @@ I/O事件监听
 ![ActionCable事件监听](http://upload-images.jianshu.io/upload_images/1767848-c1bc0f7dae25d4df.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-----
+<!-- ---- -->
 
-分析
-
-![J](http://upload-images.jianshu.io/upload_images/1767848-a011dcc42eaf389c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+<!-- ![image.png](http://upload-images.jianshu.io/upload_images/1767848-f6e99fd265b9cd71.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
 
 ----
 
-![image.png](http://upload-images.jianshu.io/upload_images/1767848-f6e99fd265b9cd71.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-ea329f0846046355.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ----
 
-## 阻塞
+```ruby
+  # which decodes JSON and transmits to the client.
+  #
+  # TODO: Room for optimization. Update transmit API to be coder-aware
+  # so we can no-op when pubsub and connection are both JSON-encoded.
+  # Then we can skip decode+encode if we're just proxying messages.
+  def default_stream_handler(broadcasting, coder:)
+    coder ||= ActiveSupport::JSON
+    stream_transmitter stream_decoder(coder: coder), broadcasting: broadcasting
+  end
 
+  def stream_decoder(handler = identity_handler, coder:)
+    if coder
+      -> message { handler.(coder.decode(message)) }
+    else
+      handler
+    end
+  end
+```
 
 ----
 
 问题
 
-* 因为与对象过多消耗内存和GC时间
-* 消息同步使用阻塞的Redis客户端
-* 连接使用线程处理但是线程锁也花时间
+* deep call stack <!-- .element: class="fragment fade-in"  -->
+* hijacking API, two reactor <!-- .element: class="fragment fade-in"  -->
+* blocking redis client <!-- .element: class="fragment fade-in"  -->
+* mutex lock <!-- .element: class="fragment fade-in"  -->
+* meaningless decode/encode<!-- .element: class="fragment fade-in"  --> 
 
 ---
+
+
 
 ## Ruby-Websocket
 
 <section>
   <p class="">**ActionCable**</p>
-  <p class="fragment fade-in">**EM-websocket**</p>
-</section>
-
----
-
-## EM-websocket
-* 基于EventMachine
-
-----
-
-Code
-
-```ruby
-EM.epoll
-EM.run {
-  @channel = EM::Channel.new
-  EM::WebSocket.run(:host => address, :port => port) do |ws|
-    ws.onopen {
-      @channel.subscribe {|msg| ws.send msg }
-    }
-    ws.onmessage { |msg|
-      cmd, payload = JSON(msg).values_at('type', 'payload')
-      @channel.push({type: 'broadcast', payload: payload}.to_json)
-      ws.send({type: "broadcastResult", payload: payload}.to_json)
-  }
-  end
-}
-```
-
-----
-
-benchmark
-
-<!-- ![image.png](http://upload-images.jianshu.io/upload_images/1767848-4644d0ff2ef87a13.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
-
-![image.png](http://upload-images.jianshu.io/upload_images/1767848-f2df4ef1ed34b416.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-----
-
-* 项目基本不在维护
-
-![image.png](http://upload-images.jianshu.io/upload_images/1767848-6c6764b7b67205b4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
----
-
-## Ruby-Websocket
-
-<section>
-  <p class="">**ActionCable**</p>
-  <p class="">**EM-websocket**</p>
   <p class="fragment fade-in">**Faye-websocket**</p>
 </section>
+
 
 ---
 
@@ -319,7 +387,8 @@ benchmark
 
 ----
 
-![faye-start](http://upload-images.jianshu.io/upload_images/1767848-a0328659ed7ed8f3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-90b5860eb5116b0a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ----
 
@@ -351,26 +420,17 @@ class Server
   def initialize
     @conns = Set.new
   end
-
   def call(env)
     if Faye::WebSocket.websocket?(env)
       ws = Faye::WebSocket.new(env)
-
-      ws.on :open do |event|
-        @conns.add(ws)
-      end
-
+      ws.on :open { |event| @conns.add(ws) }
       ws.on :message do |event|
         cmd, payload = JSON(event.data).values_at('type', 'payload')
         msg = {type: 'broadcast', payload: payload}.to_json
         @conns.each { |c| c.send(msg) }
         ws.send({type: "broadcastResult", payload: payload}.to_json)
       end
-
-      ws.on :close do |event|
-        @conns.delete(ws)
-      end
-
+      ws.on :close { |event| @conns.delete(ws) }
       ws.rack_response
     else
       [200, {'Content-Type' => 'text/plain'}, ['Please connect a websocket client']]
@@ -381,12 +441,17 @@ end
 
 ----
 
-Benchmark
-<!-- ![image.png](http://upload-images.jianshu.io/upload_images/1767848-2a5cd07328c9c607.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
+Benchmark(Thin)
 
 
-![image.png](http://upload-images.jianshu.io/upload_images/1767848-da75b8bdd6c9c67a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Faye](http://upload-images.jianshu.io/upload_images/1767848-c2c09a7db9b3e751.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+
+----
+
+Benchmark(Puma)
+
+![faye](http://upload-images.jianshu.io/upload_images/1767848-e631af7994fc019f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ----
 
@@ -414,12 +479,62 @@ class Server
 ---
 
 
+
 ## Ruby-Websocket
 
 <section>
   <p class="">**ActionCable**</p>
-  <p class="">**EM-websocket**</p>
   <p class="">**Faye-websocket**</p>
+  <p class="fragment fade-in">**EM-websocket**</p>
+</section>
+
+---
+
+
+## EM-websocket
+
+----
+
+Code Example
+
+```ruby
+EM.epoll
+EM.run {
+  @channel = EM::Channel.new
+  EM::WebSocket.run(:host => address, :port => port) do |ws|
+    ws.onopen {
+      @channel.subscribe {|msg| ws.send msg }
+    }
+    ws.onmessage { |msg|
+      cmd, payload = JSON(msg).values_at('type', 'payload')
+      @channel.push({type: 'broadcast', payload: payload}.to_json)
+      ws.send({type: "broadcastResult", payload: payload}.to_json)
+  }
+  end
+}
+```
+
+----
+
+benchmark
+
+![EventMachine](http://upload-images.jianshu.io/upload_images/1767848-21df056e28d5b327.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+----
+
+* 项目基本不在维护
+
+![em-active](http://upload-images.jianshu.io/upload_images/1767848-3064716acb4a618d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+---
+
+
+## Ruby-Websocket
+
+<section>
+  <p class="">**ActionCable**</p>
+  <p class="">**Faye-websocket**</p>
+  <p class="">**EM-websocket**</p>
   <p class="fragment fade-in">**Plezi**</p>
 </section>
 
@@ -427,10 +542,10 @@ class Server
 
 ## Plezi
 
-* 支持Rack的(M)VC框架
-* 内置异步RedisEngine
+* 支持Rack的(M)VC框架 <!-- .element: class="fragment fade-in" -->
+* 内置异步RedisEngine <!-- .element: class="fragment fade-in" -->
 
-![image.png](http://upload-images.jianshu.io/upload_images/1767848-099565dd9dc1ac92.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-099565dd9dc1ac92.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) <!-- .element: class="fragment fade-in" -->
 
 ----
 
@@ -438,12 +553,11 @@ class Server
 
 ![image.png](http://upload-images.jianshu.io/upload_images/1767848-4a5d45652731fbcc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-<!-- ![plezi-component](http://upload-images.jianshu.io/upload_images/1767848-cc0b7b15a79e3fd3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
 
 
 ----
 
-### Code
+### Code Example
 
 ```ruby
 require 'plezi'
@@ -459,9 +573,7 @@ class ShootoutApp
     puts "Incoming message format error!"
   end
 end
-
 Plezi.route '*', ShootoutApp
-
 run Plezi.app
 ```
 
@@ -469,9 +581,8 @@ run Plezi.app
 
 Benchmark
 
-<!-- ![](http://upload-images.jianshu.io/upload_images/1767848-57918408c70e0f1e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
 
-![image.png](http://upload-images.jianshu.io/upload_images/1767848-c095095bd9edf4b9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Plzei](http://upload-images.jianshu.io/upload_images/1767848-6c541a5f44daf989.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 ----
@@ -487,20 +598,31 @@ Benchmark
 
 ---
 
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-41c4b34b78d89e12.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+---
+
 ## 模式
 
 <section>
-  <p class="fragment fade-in" data-fragment-index="5">**使用Redis作为消息队列，进行水平扩展**</p>
-  <p class="fragment fade-in" data-fragment-index="4">**WebSocket Parser**</p>
-  <p class="fragment fade-in" data-fragment-index="3">**Event/Thread**</p>
-  <p class="fragment fade-in" data-fragment-index="2">**Reactor模式事件驱动**</p>
-  <p class="fragment fade-in" data-fragment-index="1">**I/O多路复用(epoll, kqueue)**</p>
+  <p class="fragment fade-in" data-fragment-index="5">使用Redis作为消息队列，进行水平扩展</p>
+  <p class="fragment fade-in" data-fragment-index="4">WebSocket Parser</p>
+  <p class="fragment fade-in" data-fragment-index="3">Event/Thread</p>
+  <p class="fragment fade-in" data-fragment-index="2">Reactor模式事件驱动</p>
+  <p class="fragment fade-in" data-fragment-index="1">I/O多路复用(epoll, kqueue)</p>
 </section>
 
 ---
 
-## Nginx Nchan
-![Logo](https://camo.githubusercontent.com/99dde2976b3b18edb59dd185404d6395196b04d1/68747470733a2f2f6e6368616e2e696f2f6769746875622d6c6f676f2e706e67)
+## Ruby websocket 扩展方案
+
+* Nchan <!-- .element: class="fragment fade-in"  -->
+* AnyCable <!-- .element: class="fragment fade-in"  -->
+
+---
+
+<!-- ## Nginx Nchan -->
+![Nchan Logo](http://upload-images.jianshu.io/upload_images/1767848-bba6db09cfa1c7c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ----
 
@@ -524,12 +646,6 @@ Benchmark
 
 ----
 
-## HTTP 负载均衡
-
-![](http://upload-images.jianshu.io/upload_images/1767848-410e20d28ad11ca5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-----
-
 ## websocket 负载均衡
 
 ![websocket load balancing](http://upload-images.jianshu.io/upload_images/1767848-0bff11ee1fff6f1a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
@@ -541,11 +657,11 @@ Benchmark
 ![nchan load balancing](http://upload-images.jianshu.io/upload_images/1767848-fb79f5cab3f6de45.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-----
+<!-- ---- -->
 
-## 性能 
+<!-- ## 性能  -->
 
-![](https://nchan.io/img/benchmark_internal_total.png)
+<!-- ![](https://nchan.io/img/benchmark_internal_total.png) -->
 
 ----
 
@@ -555,11 +671,41 @@ Benchmark
 
 ---
 
-## 对比
+## AnyCable
 
-<!-- ![image.png](http://upload-images.jianshu.io/upload_images/1767848-fe5b57e29db432ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) -->
+* 兼容ActionCable的 WS Server 
 
-![image.png](http://upload-images.jianshu.io/upload_images/1767848-1888e59e3544f8c9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+----
+
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-1afe520c223993cb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+----
+
+## AnyCable Server
+* anycable-go
+* anycable-erlang
+
+----
+
+```ruby
+# Gemfile
+gem 'anycable', group: :production
+
+# generate rpc server script
+rails generate anycable
+
+# run gRPC server
+./bin/anycable
+
+# run websocket server
+anycable-go -addr=0.0.0.0:3334
+
+```
+
+
+---
+
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-b2286d7d1902d4c3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ---
 
@@ -567,14 +713,16 @@ Benchmark
 
 * 关键取决于应用场景, 适合的是最好的。  <!-- .element: class="fragment fade-in"  -->
 * 一般场景下ActionCable可以满足需求, 尤其是依赖Rails - ActionCable <!-- .element: class="fragment fade-in"  -->
-* 不依赖Rails, 期望有较好的并发性能 - Faye Plezi <!-- .element: class="fragment fade-in"  -->
-* 非Rails5, 有较高并发需求, 未来需要多语言支持 - Nchan  <!-- .element: class="fragment fade-in"  -->
+* 不依赖Rails, 尝试 - Faye Plezi Midori <!-- .element: class="fragment fade-in"  -->
+* 非Rails, 未来需要多语言支持 - Nchan  <!-- .element: class="fragment fade-in"  -->
 
 
 ---
 
-## Thank You 
+# 谢谢大家
 ## Q&A
+
+<img src="http://upload-images.jianshu.io/upload_images/1767848-fad8d4065517ac9a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" style="width: 300px" />
 
 
 
