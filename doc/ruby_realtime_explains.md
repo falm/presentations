@@ -251,13 +251,18 @@ Polling & Long Polling & Comet
 
 * **HTTP链接** - 技术简单, 但体验差，技术陈旧
 * **第三方云服务** - 功能强大, 服务稳定，但是无法定制且收费不低
-* **WebSocket** - 是自建实时通讯的不二之选
+* **WebSocket** - 标准定义，兼容性稍差, 但不失为好点选择
 
 ---
 
 ### Ruby有哪些Websocket解决方案?
 
+* 四个Ruby方案 <!-- .element: class="fragment fade-in" -->
+* 两个扩展方案 <!-- .element: class="fragment fade-in" -->
+
 ---
+
+
 
 ## Ruby Websocket
 
@@ -303,11 +308,6 @@ ActionCable server 可单独运行，也可以与App Server一起运行
 ![J](http://upload-images.jianshu.io/upload_images/1767848-a011dcc42eaf389c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-----
-
-内部结构
-
-![image.png](http://upload-images.jianshu.io/upload_images/1767848-a344a9edd438ad35.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 ----
@@ -321,6 +321,13 @@ ActionCable server 可单独运行，也可以与App Server一起运行
 I/O事件监听
 
 ![ActionCable事件监听](http://upload-images.jianshu.io/upload_images/1767848-c1bc0f7dae25d4df.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+----
+
+内部结构
+
+![image.png](http://upload-images.jianshu.io/upload_images/1767848-a344a9edd438ad35.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
 <!-- ---- -->
@@ -358,10 +365,9 @@ I/O事件监听
 问题
 
 * deep call stack <!-- .element: class="fragment fade-in"  -->
-* hijacking API, two reactor <!-- .element: class="fragment fade-in"  -->
+* hijacking API, doubled reactors <!-- .element: class="fragment fade-in"  -->
 * blocking redis client <!-- .element: class="fragment fade-in"  -->
-* mutex lock <!-- .element: class="fragment fade-in"  -->
-* meaningless decode/encode<!-- .element: class="fragment fade-in"  --> 
+* meaningless decode/encode callback<!-- .element: class="fragment fade-in"  --> 
 
 ---
 
@@ -476,8 +482,15 @@ class Server
   end
 ```
 
----
+----
 
+问题
+
+* hijacking API
+* 没有内置Pub/Sub
+* EventMachine
+
+---
 
 
 ## Ruby-Websocket
@@ -543,7 +556,7 @@ benchmark
 ## Plezi
 
 * 支持Rack的(M)VC框架 <!-- .element: class="fragment fade-in" -->
-* 内置异步RedisEngine <!-- .element: class="fragment fade-in" -->
+
 
 ![image.png](http://upload-images.jianshu.io/upload_images/1767848-099565dd9dc1ac92.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) <!-- .element: class="fragment fade-in" -->
 
@@ -589,14 +602,16 @@ Benchmark
 
 **Iodine**
 
-* "native" websocket 没有使用hijacking API
+* "native" websocket, no hijacking API
 
-* 协议和Reactor C实现 (多线程协议解析 无GIL 无GC)
+* Core and parsers are running outside of GIL
 
-* 事件驱动, Reactor模式, (单进程 单事件循环) 
+* EventDrive single reactor
 
 
 ---
+
+
 
 ![image.png](http://upload-images.jianshu.io/upload_images/1767848-41c4b34b78d89e12.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
@@ -614,7 +629,7 @@ Benchmark
 
 ---
 
-## Ruby websocket 扩展方案
+## 扩展方案
 
 * Nchan <!-- .element: class="fragment fade-in"  -->
 * AnyCable <!-- .element: class="fragment fade-in"  -->
@@ -702,6 +717,10 @@ anycable-go -addr=0.0.0.0:3334
 
 ```
 
+---
+
+![anycable and nchan](http://upload-images.jianshu.io/upload_images/1767848-cff62bc31565722c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 
 ---
 
@@ -709,12 +728,12 @@ anycable-go -addr=0.0.0.0:3334
 
 ---
 
-## 如何选择
+## 选择的建议
 
 * 关键取决于应用场景, 适合的是最好的。  <!-- .element: class="fragment fade-in"  -->
-* 一般场景下ActionCable可以满足需求, 尤其是依赖Rails - ActionCable <!-- .element: class="fragment fade-in"  -->
-* 不依赖Rails, 尝试 - Faye Plezi Midori <!-- .element: class="fragment fade-in"  -->
-* 非Rails, 未来需要多语言支持 - Nchan  <!-- .element: class="fragment fade-in"  -->
+* 一般场景下ActionCable可以满足需求, 尤其正在使用Rails5 <!-- .element: class="fragment fade-in"  -->
+* 不依赖Rails, 应该尝试 - Faye Plezi Midori <!-- .element: class="fragment fade-in"  -->
+* 非Rails5, 未来需要多语言支持 - Nchan  <!-- .element: class="fragment fade-in"  -->
 
 
 ---
