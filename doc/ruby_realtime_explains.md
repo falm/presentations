@@ -623,7 +623,7 @@ Benchmark
   <p class="fragment fade-in" data-fragment-index="5">使用Redis作为消息队列，进行水平扩展</p>
   <p class="fragment fade-in" data-fragment-index="4">WebSocket Parser</p>
   <p class="fragment fade-in" data-fragment-index="3">Event/Thread</p>
-  <p class="fragment fade-in" data-fragment-index="2">Reactor模式事件驱动</p>
+  <p class="fragment fade-in" data-fragment-index="2">Reactor</p>
   <p class="fragment fade-in" data-fragment-index="1">I/O多路复用(epoll, kqueue)</p>
 </section>
 
